@@ -82,6 +82,5 @@
   </table>
 
 </div>
-{{-- {!! $users->render() !!} --}}
 </div>
 @endsection

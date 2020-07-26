@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AttendanceSheet;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -209,6 +210,44 @@ public function revokePermission($permission, $user_id)
    $users->revokePermissionTo($permission);
 
    return back();
+}
+
+/**
+ * Display the specified resource.
+ *
+ * @param  \App\Users  $users
+ * @return \Illuminate\Http\Response
+ */
+public function showUserProfile($id)
+{
+  /*
+    $user =  \App\User::findOrfail($id);
+    $user_id = $user->id;
+    $totalTicketSetting = $user->settings()->get('total_tickets');
+    $userGroups = Auth::user()->group;
+    $ProfileGroups = $user->group;
+
+      foreach ($userGroups as $userGroup) {
+        $userGroupIDs[] =  $userGroup->id;
+      };
+
+      foreach ($ProfileGroups as $ProfileGroup) {
+        $ProfileGroupsIDs[] =  $ProfileGroup->id;
+      };
+
+    $assigned_tickets = Ticket::orderByRaw('created_at DESC')->whereHas('user', function ($q) use ($id) {
+    $q->where('user_id', $id);})->simplePaginate(10);
+
+    $statuses = Status::all();
+    $categories = Category::all()->pluck('category_name','id');
+
+  return view('profile.index', compact('user','assigned_tickets','statuses','categories','totalTicketSetting','user_id','assets'));
+  */
+  $attendancesheets = AttendanceSheet::latest()->simplePaginate(15);
+
+  return view('profile.index', compact('attendancesheets'));
+  //return view('profile.index');
+
 }
 
 }

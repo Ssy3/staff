@@ -19,7 +19,7 @@ class AttendanceScope implements Scope
      */
      public function apply(Builder $builder, Model $model)
      {
-       /*
+
        if (Auth::hasUser()) {
          $userId = Auth::user()->id;
          if (Auth::user()->hasRole('admin')) { // for manager role, show all the attendance records
@@ -32,6 +32,6 @@ class AttendanceScope implements Scope
          $builder->where('user_id', '=', $userId);
          }
        }
-       */
+       
      }
 }
