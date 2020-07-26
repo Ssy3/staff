@@ -43,6 +43,13 @@ Route::get('/userSearch', 'UserController@userSearch')->name('user.userSearch');
 Route::post('users/addRole', '\App\Http\Controllers\UserController@addRole');
 Route::get('users/removeRole/{role}/{user_id}', '\App\Http\Controllers\UserController@revokeRole');
 
+//Groups Routes
+Route::resource('group', 'GroupController');
+
+    // assign and remove user from a group
+    Route::post('users/addUserGroup', 'UserController@addUserGroup');
+    Route::get('users/removeUserGroup/{user_id}/{group_id}', '\App\Http\Controllers\UserController@removeUserGroup');
+
     // Add Permission to a user
 Route::post('users/addPermission', '\App\Http\Controllers\UserController@addPermission');
 Route::get('users/removePermission/{permission}/{user_id}', '\App\Http\Controllers\UserController@revokePermission');
