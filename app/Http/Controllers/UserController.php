@@ -145,7 +145,7 @@ class UserController extends Controller
 
     }
 
-    
+
     //add and remove group to user.
 
     public function addUserGroup(Request $request)
@@ -240,34 +240,8 @@ public function revokePermission($permission, $user_id)
  */
 public function showUserProfile($id)
 {
-  /*
-    $user =  \App\User::findOrfail($id);
-    $user_id = $user->id;
-    $totalTicketSetting = $user->settings()->get('total_tickets');
-    $userGroups = Auth::user()->group;
-    $ProfileGroups = $user->group;
-
-      foreach ($userGroups as $userGroup) {
-        $userGroupIDs[] =  $userGroup->id;
-      };
-
-      foreach ($ProfileGroups as $ProfileGroup) {
-        $ProfileGroupsIDs[] =  $ProfileGroup->id;
-      };
-
-    $assigned_tickets = Ticket::orderByRaw('created_at DESC')->whereHas('user', function ($q) use ($id) {
-    $q->where('user_id', $id);})->simplePaginate(10);
-
-    $statuses = Status::all();
-    $categories = Category::all()->pluck('category_name','id');
-
-  return view('profile.index', compact('user','assigned_tickets','statuses','categories','totalTicketSetting','user_id','assets'));
-  */
   $attendancesheets = AttendanceSheet::latest()->simplePaginate(15);
-
   return view('profile.index', compact('attendancesheets'));
-  //return view('profile.index');
-
 }
 
 }
