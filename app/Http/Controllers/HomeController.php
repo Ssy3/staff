@@ -32,8 +32,7 @@ class HomeController extends Controller
         // $user = auth()->user();
 
         $user = Auth::user();
-        $UserAttendance = AttendanceSheet::where('user_id', '=', $user->id)
-        ->whereBetween('created_at', [$fromDate, $toDate])
+        $UserAttendance = AttendanceSheet::whereBetween('attendance_sheet.created_at', [$fromDate, $toDate])
         ->latest()->take(10)->get();
         return view('home',compact('user', 'UserAttendance'));
     }

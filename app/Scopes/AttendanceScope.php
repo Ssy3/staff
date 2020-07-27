@@ -19,19 +19,26 @@ class AttendanceScope implements Scope
      */
      public function apply(Builder $builder, Model $model)
      {
-
        if (Auth::hasUser()) {
-         $userId = Auth::user()->id;
-         if (Auth::user()->hasRole('admin')) { // for manager role, show all the attendance records
-           $builder;
+         if (Auth::user()->hasRole('admin')) { // for admin role, show all the attendance records
+           $builder->leftjoin('users', 'attendance_sheet.user_id', '=', 'users.id')
+                  ->leftjoin('group_to_user', 'group_to_user.user_id', '=', 'users.id')
+                  ->select('users.name as name','users.email as email','attendance_sheet.action as action','attendance_sheet.created_at as created_at');
          }
-         elseif (Auth::user()->hasRole('manager')) { // for manager role, show the attendance of all his group members
-           $builder;
-           //$builder->whereIn('group_id', $userGroupIDs);
-         } else { // for users without role, show their attendance only
-         $builder->where('user_id', '=', $userId);
+         elseif (Auth::user()->hasPermissionTo('view attendance sheet')) { // show the attendance of all group members (admin dose not have groups)
+           $userGroups = Auth::user()->group;
+             foreach ($userGroups as $userGroup) {
+               $userGroupIDs[] =  $userGroup->id;
+             };
+           $builder->join('users', 'attendance_sheet.user_id', '=', 'users.id')
+                  ->join('group_to_user', 'group_to_user.user_id', '=', 'users.id')
+                  ->whereIn('group_to_user.group_id', $userGroupIDs)
+                  ->select('users.name as name','users.email as email','attendance_sheet.action as action','attendance_sheet.created_at as created_at');
+         } else { // for users without view attendance sheet permission, show their attendance only
+           $userId = Auth::user()->id;
+           $builder->where('user_id', '=', $userId);
          }
        }
-       
+
      }
 }

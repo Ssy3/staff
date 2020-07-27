@@ -61,8 +61,8 @@
 
   @foreach($attendancesheets as $attendancesheet)
     <tr>
-      <td>{{$attendancesheet->user->name}}</td>
-      <td>{{$attendancesheet->user->email}}</td>
+      <td>{{$attendancesheet->name}}</td>
+      <td>{{$attendancesheet->email}}</td>
       <td>{{$attendancesheet->action}}</td>
       <td>{{$attendancesheet['created_at']}} <b>({{$attendancesheet['created_at']->diffForHumans()}})</b></td>
       <td><a target="_blank" href="https://www.google.com/search?q={{$attendancesheet->coords}}">Map</a></td>
