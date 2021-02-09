@@ -21,15 +21,14 @@
     <div class="row">
       <div class="form-group col-md-4">
         <label for="Group">Group Name</label>
-        <select class="form-control" name="group_id" />
-        <option value="none" selected>Select Group </option>
+        <select class="form-control" name="group_id" required/>
+        <option value=""> Select Group </option>
         @foreach($userGroups as $group)
         <option value="{{$group->id}}"> {{$group->group_name}}</option>
         @endforeach
       </select>
       </div>
       <div class="form-group col-md-4">
-          
           <label for="Date">Date</label>
           <input type="date" class="form-control" name="date" required/>
       </div>

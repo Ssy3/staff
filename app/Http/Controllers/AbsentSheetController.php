@@ -87,9 +87,11 @@ class AbsentSheetController extends Controller
         ->join('users', 'users.id', '=', 'attendance_sheet.user_id')
         ->whereDate('attendance_sheet.created_at', '=', $date)
         ->where('attendance_sheet.group_id', '=', $group_id)
-        ->havingRaw('COUNT(*) = 1')
+        ->having(DB::raw('COUNT(*)'),'=', 1) 
         ->groupBy('users.name','users.email','attendance_sheet.action')
         ->get();
+
+        //return $partiallyAbsent;
 
       $userGroups = Auth::user()->group;
       $group_name = Group::where('id','=',$group_id)->value('group_name');
