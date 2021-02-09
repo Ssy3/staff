@@ -62,9 +62,9 @@
           <td>{{$absentsheet->name}}</td>
           <td>{{$absentsheet->email}}</td>
           <td>
-            @if ($absentsheet->action == 'Check In')
+            @if ($absentsheet->attendance[0]->action == 'Check In')
             Missing Check Out
-            @elseif ($absentsheet->action == 'Check Out')
+            @elseif ($absentsheet->attendance[0]->action == 'Check Out')
             Missing Check In
             @endif
           </td>

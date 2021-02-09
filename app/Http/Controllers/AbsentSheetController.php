@@ -82,16 +82,28 @@ class AbsentSheetController extends Controller
         ->where('attendance_sheet.group_id', '=', $group_id);
       })->get();
 
-      $partiallyAbsent = DB::table('attendance_sheet')
+      /*$partiallyAbsent = DB::table('attendance_sheet')
         ->select('users.name','users.email','attendance_sheet.action')
         ->join('users', 'users.id', '=', 'attendance_sheet.user_id')
         ->whereDate('attendance_sheet.created_at', '=', $date)
         ->where('attendance_sheet.group_id', '=', $group_id)
-        ->having(DB::raw('COUNT(*)'),'=', 1) 
+        ->having(DB::raw('COUNT(*)'),'=', 1)
         ->groupBy('users.name','users.email','attendance_sheet.action')
-        ->get();
+        ->get();*/
 
-        //return $partiallyAbsent;
+      $partiallyAbsent = User::GroupUsers()
+        ->with('attendance')
+        ->whereHas('attendance', function ($query) use ($date, $group_id) {
+          $query->select(DB::raw("COUNT(*) count, user_id"))
+        ->whereDate('created_at', '=', $date)
+        ->where('group_id', '=', $group_id)
+        ->havingRaw('COUNT(*) = 1') // users with one attendance records daily
+        ->groupBy('user_id');
+        //->havingRaw('COUNT(*) = 1');
+        //->having(DB::raw('count(*)'), '=', 1);
+        })->get();
+
+      //return $partiallyAbsent;
 
       $userGroups = Auth::user()->group;
       $group_name = Group::where('id','=',$group_id)->value('group_name');
